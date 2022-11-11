@@ -1,8 +1,7 @@
 //import our db, Model, DataTypes
-const { db } = require('../db')
-const { Model, DataTypes } = require('sequelize')
+const { db, DataTypes  } = require('../db')
 
-class Show extends Model {}
+// class Show extends Model {}
 
 
 //Creating a User child class from the Model parent class

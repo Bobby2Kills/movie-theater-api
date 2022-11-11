@@ -1,9 +1,8 @@
 const {Router} = require('express')
-const showRouter = Router()
-const db = require('sequelize')
-const {User, Show} = require("../models/Index")
+const userRouter = Router()
+const {User, Show} = require("../models/index")
 
-showRouter.get("/users", async(req, res) => {
+userRouter.get("/", async(req, res) => {
     try {
         const allUsers = await User.findAll();
         res.send(allUsers)
@@ -13,9 +12,9 @@ showRouter.get("/users", async(req, res) => {
     }
 })
 
-showRouter.get(`/users/:id`, async(req,res) => {
+userRouter.get(`/:id`, async(req,res) => {
     try {
-        const oneUser = await User.findOne();
+        const oneUser = await User.findByPk(req.params.id);
         res.send(oneUser)
     }
     catch (error) {
@@ -23,14 +22,14 @@ showRouter.get(`/users/:id`, async(req,res) => {
     }
 })
 
-showRouter.get('/users/:id/shows'), async(req,res) => {
+userRouter.get(':id/shows', async(req,res) => {
     try{
-        const allUserShows = await Show.findAll(User.findByPk(req, {include: { model: Show }}));
+        const allUserShows = await Show.findAll(User.findByPk(req.params.id, {include: { model: Show }}));
         res.send(allUserShows)
     }
     catch (error) {
         res.send(error)
     }
-}
+})
 
 module.exports = userRouter;
