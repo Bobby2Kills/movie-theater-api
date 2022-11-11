@@ -3,6 +3,7 @@ const showRouter = Router()
 const sequelize = require('sequelize')
 const {User, Show} = require("../models/index")
 
+//The Show Router should GET ALL shows from the database using the endpoint /shows
 showRouter.get("/", async(req, res) => {
     try {
         const allShows = await Show.findAll();
@@ -13,7 +14,8 @@ showRouter.get("/", async(req, res) => {
     }
 })
 
-showRouter.get(`/id/:id`, async(req,res) => {
+//The Show Router should GET one show from the database using an endpoint.
+showRouter.get(`/:id`, async(req,res) => {
     try {
         const oneShow = await Show.findByPk(req.params.id);
         res.send(oneShow)
@@ -23,6 +25,7 @@ showRouter.get(`/id/:id`, async(req,res) => {
     }
 })
 
+// The Show Router should get shows of a specific genre using an endpoint.
 showRouter.get(`/genre/:genre`, async(req,res) => {
     try {
         const showGenre = await Show.findAll({ 
@@ -30,8 +33,20 @@ showRouter.get(`/genre/:genre`, async(req,res) => {
                 genre: req.params.genre
             }
         });
-            console.log(showGenre)
             res.send(showGenre)
+    }
+    catch (error) {
+        res.send(error)
+    }
+})
+
+// The Show Router should update a rating on a specific show using an endpoint.
+showRouter.put(`/:id/ratings/:rating`, async(req,res) =>{
+    try{
+        const show = await Show.findByPk(req.params.id)
+        show.set({rating: req.params.rating})
+        await show.save()
+        res.send(show)
     }
     catch (error) {
         res.send(error)
